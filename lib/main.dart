@@ -42,71 +42,54 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
-      body: BlocListener<CounterCubit, CounterState>(
+      body: BlocConsumer<CounterCubit, CounterState>(
         listener: (context, state) {
-          if (state.wasIncremented) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Incremented!'),
-                duration: Duration(milliseconds: 300),
-              ),
-            );
-          } else {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Decremented!'),
-                duration: Duration(milliseconds: 300),
-              ),
-            );
-          }
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content:
+                  Text(state.wasIncremented ? 'Incremented!' : 'Decremented!'),
+              duration: const Duration(milliseconds: 300),
+            ),
+          );
         },
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              const Text(
-                'You have pushed the button this many times:',
-              ),
-              BlocBuilder<CounterCubit, CounterState>(
-                builder: (context, state) {
-                  // if negative, show a different color
-                  if (state.counterValue < 0) {
-                    return Text(
-                      state.counterValue.toString(),
-                      style:
-                          Theme.of(context).textTheme.headlineMedium?.copyWith(
-                                color: Colors.red,
-                              ),
-                    );
-                  }
-                  return Text(
-                    state.counterValue.toString(),
-                    style: Theme.of(context).textTheme.headlineMedium,
-                  );
-                },
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  FloatingActionButton(
-                    onPressed: () {
-                      context.read<CounterCubit>().decrement();
-                    },
-                    tooltip: 'Decrement',
-                    child: const Icon(Icons.remove),
-                  ),
-                  FloatingActionButton(
-                    onPressed: () {
-                      context.read<CounterCubit>().increment();
-                    },
-                    tooltip: 'Increment',
-                    child: const Icon(Icons.add),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
+        builder: (context, state) {
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                const Text(
+                  'You have pushed the button this many times:',
+                ),
+                Text(
+                  state.counterValue.toString(),
+                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                        color:
+                            state.counterValue < 0 ? Colors.red : Colors.green,
+                      ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    FloatingActionButton(
+                      onPressed: () {
+                        context.read<CounterCubit>().decrement();
+                      },
+                      tooltip: 'Decrement',
+                      child: const Icon(Icons.remove),
+                    ),
+                    FloatingActionButton(
+                      onPressed: () {
+                        context.read<CounterCubit>().increment();
+                      },
+                      tooltip: 'Increment',
+                      child: const Icon(Icons.add),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          );
+        },
       ),
     );
   }
