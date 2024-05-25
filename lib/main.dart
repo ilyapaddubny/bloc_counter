@@ -1,4 +1,5 @@
-import 'package:bloc_counter/cubit/counter_cubit_cubit.dart';
+import 'package:bloc_counter/logic/cubit/counter_cubit_cubit.dart';
+import 'package:bloc_counter/presentation/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -20,76 +21,8 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home: const MyHomePage(title: 'Flutter Demo Home Page'),
-      ),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
-      ),
-      body: BlocConsumer<CounterCubit, CounterState>(
-        listener: (context, state) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content:
-                  Text(state.wasIncremented ? 'Incremented!' : 'Decremented!'),
-              duration: const Duration(milliseconds: 300),
-            ),
-          );
-        },
-        builder: (context, state) {
-          return Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                const Text(
-                  'You have pushed the button this many times:',
-                ),
-                Text(
-                  state.counterValue.toString(),
-                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                        color:
-                            state.counterValue < 0 ? Colors.red : Colors.green,
-                      ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    FloatingActionButton(
-                      onPressed: () {
-                        context.read<CounterCubit>().decrement();
-                      },
-                      tooltip: 'Decrement',
-                      child: const Icon(Icons.remove),
-                    ),
-                    FloatingActionButton(
-                      onPressed: () {
-                        context.read<CounterCubit>().increment();
-                      },
-                      tooltip: 'Increment',
-                      child: const Icon(Icons.add),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          );
-        },
+        home: const HomeScreen(
+            title: 'Flutter Demo Home Page', color: Colors.deepPurple),
       ),
     );
   }
